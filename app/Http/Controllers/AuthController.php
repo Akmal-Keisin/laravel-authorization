@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -18,7 +20,9 @@ class AuthController extends Controller
         try {
             return view('pages.auth.register');
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->back()->with([
+                'error' => $th->getMessage()
+            ]);
         }
     }
 
@@ -46,16 +50,31 @@ class AuthController extends Controller
         try {
             return view('pages.auth.login');
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->back()->with([
+                'error' => $th->getMessage()
+            ]);
         }
     }
 
-    public function authLogin()
+    public function authLogin(LoginRequest $request)
     {
         try {
+            if (Auth::attempt([
+                    'email' => $request->validated('email'),
+                    'password' => $request->validated('password')
+                ])) {
+                $request->session()->regenerate();
 
+                return redirect()->intended('/dashboard');
+            }
+
+            return redirect()->back()->with([
+                'error' => 'The provided credentials do not match our records.'
+            ])->onlyInput('email');
         } catch (\Throwable $th) {
-
+            return redirect()->back()->with([
+                'error' => $th->getMessage()
+            ]);
         }
     }
 }

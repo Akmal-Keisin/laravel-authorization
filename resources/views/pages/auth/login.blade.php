@@ -44,21 +44,24 @@
         <div class="bg-white p-8 rounded-lg shadow-lg w-96">
             <h1 class="text-3xl text-center font-bold mb-4">Login Page</h1>
 
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email"
-                    class="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-input px-4 py-2">
-            </div>
+            <form action="{{ route('auth-login') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email"
+                        class="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-input px-4 py-2">
+                </div>
 
-            <div class="mb-6">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password"
-                    class="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-input px-4 py-2">
-            </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        class="mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-input px-4 py-2">
+                </div>
 
-            <button type="button"
-                class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login
-            </button>
+                <button type="submit"
+                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login
+                </button>
+            </form>
 
             <div class="text-center mt-4">
                 <p class="text-sm text-gray-600">Didn't have account yet? <a href="{{ route('register') }}" class="text-blue-500 hover:underline">Register now!</a></p>
