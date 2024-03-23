@@ -8,16 +8,18 @@
     {{-- Tailwind CSS --}}
     @vite('resources/css/app.css')
 
-    <title>{{ config("app.name") }}</title>
+    <title>{{ config('app.name') }}</title>
 </head>
 
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <x-layouts.sidebar/>
 
-    <header>
-
-    </header>
-    <main>
-        {{ $slot }}
-    </main>
+        <!-- Main Content -->
+        <div class="w-10/12">
+            {{ $slot }}
+        </div>
+    </div>
 </body>
 </html>

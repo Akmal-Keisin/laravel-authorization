@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use App\Services\AuthServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthServices $service)
+    public function __construct()
     {
 
     }
@@ -29,11 +31,14 @@ class AuthController extends Controller
     public function authRegister(RegisterRequest $request)
     {
         try {
-            $this->service->registerUser(
-                fullName: $request->get('full_name'),
-                email: $request->get('email'),
-                password: $request->get('password')
-            );
+            $user = User::where('email', $request->validated('email'))->first();
+            if ($user) throw new \Exception("Email telah digunakan");
+
+            User::create([
+                'name' => $request->validated('name'),
+                'email' => $request->validated('email'),
+                'password' => Hash::make($request->validated('password'))
+            ]);
 
             return redirect()->route('login')->with([
                 'success' => 'Akun berhasil dibuat, sialahkan login'
@@ -65,7 +70,9 @@ class AuthController extends Controller
                 ])) {
                 $request->session()->regenerate();
 
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('/dashboard')->with([
+                    'success' => 'Login success, have a great day'
+                ]);
             }
 
             return redirect()->back()->with([
@@ -76,5 +83,18 @@ class AuthController extends Controller
                 'error' => $th->getMessage()
             ]);
         }
+    }
+
+    public function authLogout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with([
+            'success' => 'Logout success, see you next time'
+        ]);
     }
 }
