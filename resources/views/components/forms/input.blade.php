@@ -4,27 +4,32 @@
     'name' => null,
     'placeholder' => null,
     'withErrorMessage' => false,
-    'errorMessage' => null
+    'errorMessage' => null,
+    'value' => null,
 ])
 
 <input
-    @isset($type)
+    @if($type)
         type={{ $type }}
-    @endisset
+    @endif
 
-    @isset($type)
+    @if($type)
         type="{{ $type }}"
-    @endisset
+    @endif
 
-    @isset($id)
+    @if($id)
         id="{{ $id }}"
-    @endisset
+    @endif
 
-    @isset($name)
+    @if($name)
         name="{{ $name }}"
-    @endisset
+    @endif
 
-    placeholder="{{ $placeholder }}"
+    @if($value)
+        value="{{ $value }}"
+    @endif
+
+    placeholder="{!! $placeholder !!}"
 
     @class([
         "mt-1 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm custom-input px-4 py-2"
@@ -32,9 +37,11 @@
 />
 
 @if($withErrorMessage && $errorMessage)
-    <span class="text-pink-400">test 123 123</span>
+    <span class="text-red-400">{{ $errorMessage }}</span>
 @elseif ($withErrorMessage && $errors)
-    <ul class="text-pink-400">
-        <li>test 123 123</li>
+    <ul class="text-red-400">
+        @foreach($errors->get($name) as $error)
+            <li>{{ $error }}</li>
+        @endforeach
     </ul>
 @endif

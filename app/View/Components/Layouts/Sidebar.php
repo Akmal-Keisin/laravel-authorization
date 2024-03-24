@@ -19,6 +19,7 @@ class Sidebar extends Component
         $this->menus = [
             $this->mappingMenu('Dashboard', 'dashboard.index'),
             $this->mappingMenu('Users', 'users.index'),
+            $this->mappingMenu('Roles', 'roles.index'),
         ];
     }
 
