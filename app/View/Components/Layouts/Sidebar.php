@@ -20,6 +20,7 @@ class Sidebar extends Component
             $this->mappingMenu('Dashboard', 'dashboard.index'),
             $this->mappingMenu('Users', 'users.index'),
             $this->mappingMenu('Roles', 'roles.index'),
+            $this->mappingMenu('Permissions', 'permissions.index'),
         ];
     }
 
